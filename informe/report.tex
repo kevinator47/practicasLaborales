@@ -4,8 +4,14 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{xcolor}
+
+\lstdefinestyle{myCsharp}{language = [Sharp]C , backgroundcolor = \color{gray!10} , keywordstyle = \color{blue} , commentstyle = \color{green!40!}, stringstyle = \color{orange} , basicstyle = \footnotesize\ttfamily, breaklines = true , tabsize = 4 , columns = fullflexible , showstringspaces = false , escapeinside = {{*@}{@*}}} 
+
+
 
 \begin{document}
+\lstset{style = myCSharp}
 
 % Titulo
 %-------------------------------------------
@@ -67,7 +73,7 @@ detalladamente en la seccion : % REEEEEFFFFFFFFFFF
 El programa debe ser capaz de acceder a la informacion de los documentos, es decir sus direcciones(ya sabemos que se encuentran en la carpeta Content).
 La funcion \textit{SearchFiles} se encargara de esto, utilizando el metodo \textit{EnumerateFiles} de la clase \textit{Directory}.
 
-\begin{lstlisting}[language={[Sharp]C} , basicstyle = \tiny]
+\begin{lstlisting}
     
 public void SearchFiles(string dir)
 {
@@ -186,7 +192,7 @@ al vector del documento. \\[5pt]
 
 \newpage
 
-\begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+\begin{lstlisting}
 public void CreateVectors()
 {
     Parallel.For(0 , docs.Length , i =>
@@ -243,7 +249,7 @@ los subíndices son las palabras). Notemos que si una palabra no forma parte del
 por tanto solo es necesario hallar el producto escalar con los valores de las palabras que se encuentren en ambos vectores.
 \\[5pt]
 
-\begin{lstlisting}[language={[Sharp]C}]
+\begin{lstlisting}
 public static double EscalarProduct(Vector Q , Vector D)
 {
     double suma = 0.0 ;
@@ -260,7 +266,7 @@ public static double EscalarProduct(Vector Q , Vector D)
 El denominador esta determinado por la multiplicación de las normas de ambos vectores, la función \textit{GetNorma} nos devuelve
 ese valor. \\[5pt]
 
-\begin{lstlisting}[language={[Sharp]C}]
+\begin{lstlisting}
 public double GetNorma()
 {
     double suma = 0.0 ;
@@ -291,7 +297,7 @@ Luego, con la función \textit{Find} encontraremos su primera aparición en el t
 en caso de que lo sobrepase).\\[5pt]
 
 
-\begin{lstlisting}[language={[Sharp]C}]
+\begin{lstlisting}
 string[] text = File.ReadAllText(this.route).Split();
 int index = Tools.Find(pointerword , text);
 
@@ -338,7 +344,7 @@ De manera contraria, el operador de prohibición(!) obliga a que la palabra no a
 Por lo cual, a la hora de calcular el score debemos chequear primeramente si cumple las condiciones del operador, en caso negativo su score será 0.
 \\[5pt]
 
-\begin{lstlisting}[language={[Sharp]C}]
+\begin{lstlisting}
 public void GetScore(Vector Vq , Term[] terms)
 {
     if(CheckIEOperators(terms))
@@ -355,7 +361,7 @@ el peso debe ser igual a 0(la palabra no pertenece al documento). \\[5pt]
 
 \newpage
 
-\begin{lstlisting}[language={[Sharp]C} , basicstyle = \small]
+\begin{lstlisting}
 private bool CheckIEOperators(Term[] terms)
 {
     for(int i = 0 ; i < terms.Length ; i ++)
@@ -383,7 +389,9 @@ en "aguacate".
 
 Para su cálculo me decidí por el método recursivo, ya que tarda menos que el iterativo, el cual luce así :
 \newpage
-\begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+
+\begin{lstlisting}
+
 // sobrecarga para que se vea mas bonito el llamado
 public static int LevDistance(string a , string b) 
 {

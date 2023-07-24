@@ -4,6 +4,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{xcolor}
+
+\lstdefinestyle{myCsharp}{language = [Sharp]C , backgroundcolor = \color{gray!10} , keywordstyle = \color{blue} , commentstyle = \color{green!40!}, stringstyle = \color{orange} , basicstyle = \footnotesize\ttfamily, breaklines = true , tabsize = 4 , columns = fullflexible , showstringspaces = false , escapeinside = {{*@}{@*}}} 
 
 \usetheme{Berlin}
 \usecolortheme{whale}
@@ -31,6 +34,8 @@
 \date{\today}
 
 \begin{document}
+
+\lstset{style = myCSharp}
 
 \frame{\titlepage}
 
@@ -73,14 +78,12 @@
 
 \begin{frame}[fragile]
     \frametitle{Cargar Documentos}
-    \begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+    \begin{lstlisting} 
 public void SearchFiles(string dir)
 {            
-    dir = Path.Combine(Directory.GetCurrentDirectory() , 
-    ".." , dir);
+    dir = Path.Combine(Directory.GetCurrentDirectory() , ".." , dir);
     
-    IEnumerable<string> routes = Directory.EnumerateFiles(
-        dir , "*txt" , SearchOption.AllDirectories);
+    IEnumerable<string> routes = Directory.EnumerateFiles(dir , "*txt" , SearchOption.AllDirectories);
                 
     this.docs = new Document[routes.Count()] ;
                 
@@ -220,7 +223,7 @@ public void SearchFiles(string dir)
 \begin{frame}[fragile]
     \frametitle{Producto Escalar}
 
-    \begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+    \begin{lstlisting} 
 public static double EscalarProduct(Vector Q , Vector D)
 {
     double suma = 0.0 ;
@@ -238,7 +241,7 @@ public static double EscalarProduct(Vector Q , Vector D)
     \frametitle{Calculando la norma}
     Para calcular la norma se ha implementado la siguiente función :
 
-    \begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+    \begin{lstlisting} 
     public double GetNorma()
     {
         double suma = 0.0 ;
@@ -257,7 +260,7 @@ public static double EscalarProduct(Vector Q , Vector D)
 
     El programa devuelve los mejores 5 documentos(mientras su score sea mayor que 0). Los documentos contienen una función
     llamada \textit{GetSnippet}, la cual localiza la palabra de la consulta más relevante en el documento, y devuelve un pedazo
-    de este(un substring de 20 palabras) donde aparece esta.
+    de este(un substring de 50 palabras) donde aparece esta.
 
 \end{frame}
 \section{Operadores y Sugerencia}
@@ -296,27 +299,69 @@ public static double EscalarProduct(Vector Q , Vector D)
     Para ello nos apoyaremos en el valor del peso de dicha palabra, si la palabra pertenece al vector(su peso es distinto de 0)
     entonces fallará el operador prohibición, en caso contrario, de no encontrarse fallará el operador de necesidad.
 
-    \begin{lstlisting}[language={[Sharp]C} , basicstyle = \footnotesize]
+    \begin{lstlisting}
 private bool CheckIEOperators(Term[] terms)
 {
     for(int i = 0 ; i < terms.Length ; i ++)
     {
-        if(terms[i].Mod.Contains(^) && 
-        !this.Vd.v.ContainsKey(terms[i].Text))
+        if(terms[i].Mod.Contains(^) && !this.Vd.v.ContainsKey(terms[i].Text))
             return false ;
                 
-        else if(terms[i].Mod.Contains('!') && 
-        this.Vd.v.ContainsKey(terms[i].Text))
-                    return false }
-return true ;}
+        else if(terms[i].Mod.Contains('!') && this.Vd.v.ContainsKey(terms[i].Text))
+            return false 
+    }
+    
+    return true ;
+}
     \end{lstlisting}
 \end{frame}
 
 \begin{frame}
-    \frametitle{title}
+    \frametitle{Sugerencia}
+    Otra funcionalidad muy útil es la sugerencia, la cual consiste en brindar al usuario palabras semejantes a las de la búsqueda en caso de que esta
+    arroje pocos resultados.
+
+    Para ello nos apoyaremos en la distancia de Levenshtein, medida que calcula la cantidad de operaciones(adición , eliminación , sustitución) de
+    caracteres necesaria para convertir una palabra en otra.
 \end{frame}
 
-\section{Jerarquía de las clases}
+\begin{frame}[fragile]
+    \frametitle{Distancia de Levenshtein}
 
+    \begin{lstlisting}
+
+    public static void LevDistance(string a , string b , int i , int j , int changes , ref int best)
+    {
+        if(changes > 3) {return ; }
+        if(changes >= best) { return ; }
+
+        while(i < a.Length && j < b.Length && a[i] == b[j])
+        {
+            i++ ;
+            j++ ;
+        }
+        ...
+        
+    \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Distancia de Levenshtein}
+    \begin{lstlisting}
+        ...
+        if( i >= a.Length || j >= b.Length - 1)
+        {
+            best = Math.Min( changes + (a.Length - i) + (b.Length - j) , best) ;
+            return ;
+        }
+        LevDistance( a , b , i + 1 , j , changes + 1 , ref best) ;
+        LevDistance( a , b , i , j + 1 , changes + 1 , ref best) ;
+        LevDistance( a , b , i + 1 , j + 1 , changes + 1 , ref best) ;
+    }
+    \end{lstlisting}
+    
+
+\end{frame}
 
 \end{document}
