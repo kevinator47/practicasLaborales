@@ -22,5 +22,6 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
 MoogleEngine.Dataserver.BaseDatos.Load("Content");
 app.Run();

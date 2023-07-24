@@ -3,14 +3,18 @@ using System ;
 
 public class Vector
 {
+    // Propiedades
     public Dictionary <string , double > v ;
 
+
+    // ---------------------------- CONSTRUCTOR -----------------------------------------------------
     public Vector()
     {
         this.v = new Dictionary <string , double>();
     }
 
-    // indexer
+    
+    //------------------------------ INDEXER ----------------------------------------------------------
     public double this[string j]
     {
         get{
@@ -21,21 +25,25 @@ public class Vector
             v[j] = value ;
         }
     }
-
+    //--------------------------------------------------------------------------------------------------------
     public static double operator*(Vector Q , Vector D)
     {
-        double ProductEsc = EscalarProduct(Q,D);
-        double Norms = Q.GetNorma() * D.GetNorma() ;
+        // Este metodo halla la similitud del coseno entre dos vectores(el score)
         
-        if(Norms == 0)
+        double Norms = Q.GetNorma() * D.GetNorma() ;
+
+        if(Norms == 0) // por si se tiene un documento(o consulta vacio) evitar division por cero
             return 0 ;
         
         else 
-            return ProductEsc / (Norms) ;           
+            return EscalarProduct(Q , D) / Norms ;           
     }
-
+    //-----------------------------------------------------------------------------------------------------------------
     public static double EscalarProduct(Vector Q , Vector D)
     {
+        /* Halla el producto escalar de dos vectores(multiplicando los terminos con el mismo indice) , en este caso
+        los indices son las palabras */
+        
         double suma = 0.0 ;
         foreach(string word in Q.v.Keys)
         {
@@ -54,5 +62,4 @@ public class Vector
         }
         return Math.Sqrt(suma);
     }
-
 }

@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/moogle-main/MoogleServer/MoogleServer.csproj",
+      "projectUniqueName": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/practicasLaborales/moogle-main/MoogleServer/MoogleServer.csproj",
       "projectName": "MoogleServer",
-      "projectPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/moogle-main/MoogleServer/MoogleServer.csproj",
+      "projectPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/practicasLaborales/moogle-main/MoogleServer/MoogleServer.csproj",
       "packagesPath": "/home/uhc121/.nuget/packages/",
-      "outputPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/moogle-main/MoogleServer/obj/",
+      "outputPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/practicasLaborales/moogle-main/MoogleServer/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/uhc121/.nuget/NuGet/NuGet.Config"
@@ -51,8 +51,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/moogle-main/MoogleEngine/MoogleEngine.csproj": {
-              "projectPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/moogle-main/MoogleEngine/MoogleEngine.csproj"
+            "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/practicasLaborales/moogle-main/MoogleEngine/MoogleEngine.csproj": {
+              "projectPath": "/home/uhc121/Documents/Primero/Programacion/MyProyects/Moogle/Repository/practicasLaborales/moogle-main/MoogleEngine/MoogleEngine.csproj"
             }
           }
         }

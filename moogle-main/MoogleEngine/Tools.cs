@@ -20,7 +20,41 @@ public class Tools
         // Devolver Resultado
         return filtered;
     }
+    //-------------------------------------------------------------------------------------------------
 
+    public static Term[] ConvertToTerms(string[] words)
+    {
+        // convierte la query en una lista de terminos
+        Term[] output = new Term[words.Length] ;
+
+        for (int i = 0; i < words.Length; i++)
+        {
+            output[i] = new Term(words[i]);            
+        }
+ 
+        return output ;
+    }
+    //--------------------------------------------------------------------------------------------------------
+    
+    public static int MaxFq(Term[] arr)
+    {
+        Dictionary<string , int> maxTable = new Dictionary <string , int>();
+
+        for(int i = 0 ; i < arr.Length ; i ++)
+        {
+            if(! maxTable.ContainsKey(arr[i].Text))
+                maxTable[arr[i].Text] = 1 ;
+            
+            else
+                maxTable[arr[i].Text] ++ ;
+
+        }
+
+        return maxTable.Values.Max() ;
+        
+    }
+    //-------------------------------------------------------------------------------------------------
+    
     public static void Ordenar(Document[] docs)
     {
         // Ordena el array de docs de mayor a menor(se podria mejorar con QuickSort)
@@ -35,44 +69,24 @@ public class Tools
             (docs[i] , docs[max]) = (docs[max] , docs[i]);
         }
     }
-
-    public static int MaxFq(Dictionary<string, Dictionary<int,int> > dict , int pos)
+    //--------------------------------------------------------------
+    public static int RelevantDocs()
     {
-        int max = 0 ;
-        foreach (var wordfreq in dict.Values)
+        // Funcion que cuenta la cantidad de documentos con alguna relevancia para la query para mostrarlos
+        // El maximo seria 5 y si no llega, aquellos que su score sea algo relevante.
+
+        int max = 5 ;
+        for(int i = 0 ; i < max ; i ++)
         {
-            if(wordfreq.ContainsKey(pos))
+            if(Dataserver.BaseDatos.docs[i].score <= 0.009 )
             {
-                max = Math.Max(max, wordfreq[pos]);
+                max = i ;
+                break ;
             }
         }
         return max ;
     }
-
-    public static int MaxFq(Term[] arr)
-    {
-        int maxrep = 0 ;
-        bool[] taken = new bool[arr.Length] ;
-        
-        for(int j = 0 ; j < arr.Length ; j ++ )
-        {
-            if(taken[j] == false)
-            {
-                int rep = 1 ;
-                for(int i = j + 1 ; i < arr.Length ; i ++ )
-                {
-                    if(arr[i] == arr[j])
-                    {
-                        rep ++ ;
-                        taken[i] = true ;
-                    }
-                }
-                maxrep = Math.Max(rep , maxrep);
-            }
-        }
-        return maxrep ;
-    }
-
+    //-------------------------------------------------------------------------------------------------
     public static int Find(string word , string[] text)
     {
         for(int j = 0 ; j < text.Length ; j++ )
@@ -82,7 +96,6 @@ public class Tools
         }
         return -1 ;
     }
-
     //---------------------------------------------------------------------
     public static int LevDistance(string a , string b) // sobrecarga para que se vea mas bonito el llamado
     {
@@ -114,3 +127,4 @@ public class Tools
     }       
     //----------------------------------------------------------------------
 }
+

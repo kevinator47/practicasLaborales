@@ -4,28 +4,12 @@ namespace MoogleEngine ;
 
 public class Term{
 
+    // Propiedades
+
     string word ;
     string mod = "" ;
 
-    public Term(string s)
-    {
-        // obteniendo los modificadores de la palabra
-        for (int i = 0; i < s.Length; i++)
-        {
-            if(s[i] == '^' || s[i] == '!' || s[i] == '*')
-            {
-                this.mod += s[i] ;
-                continue ;
-            }
-            break ;
-        }
-
-        if(mod != "") // remueve el operador de la palabra
-            s = s.Replace(mod , "") ;
-        
-        this.word = s ; // guarda la palabra sin operador
-    }
-
+    // ------------------------------------------------------------------------------
     public string Text
     {
         get{ return word ; }
@@ -36,4 +20,37 @@ public class Term{
     {
         get{ return mod ;}
     }
+    // ------------------------------------------------------------------------------
+    // Constructor
+    public Term(string s)
+    {
+        // obteniendo los modificadores de la palabra
+        foreach (char symb in s )
+        {
+            if(symb == '*' || symb == '^' || symb == '!')
+            {
+                this.mod += symb ;
+                continue ;
+            }
+            break ;
+        }
+        
+        if(mod != "")
+            s = s.Replace(mod , "") ; // Remueve el operador de la palabra
+        
+        this.word = s ; // guarda la palabra sin operador
+    }
+    //------------------------------------------------------------------------------------
+    public int ImpOperator()
+    {
+        int imp = 1 ;
+        
+        foreach(char c in this.Mod)                
+        {
+            if (c == '*')                           
+                imp ++ ;
+        }
+    return imp ;
+    }
+    
 }
