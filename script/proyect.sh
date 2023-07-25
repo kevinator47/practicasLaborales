@@ -6,31 +6,15 @@ run_moogle(){
 }
 
 # Funcion para mostrar report y slide respect
-show_report(){
+select_report(){
     FILENAME="report"
     DIRECTORY="./../informe"
-    show_pdf
 }
 
-show_slide(){
+select_slide(){
     FILENAME="slide"
     DIRECTORY="./../presentacion"
-    show_pdf
 }
-
-# Funcion para crear report y slide respect.
-create_report(){
-    FILENAME="report"
-    DIRECTORY="./../informe"
-    create_pdf
-}
-
-create_slide(){
-    FILENAME="slide"
-    DIRECTORY="./../presentacion"
-    create_pdf
-}
-
 
 #Funcion para crear los pdf a partir de los .tex
 create_pdf(){
@@ -46,11 +30,25 @@ show_pdf(){
     
     if [ -f "${DIRECTORY}/${FILENAME}.pdf" ];then
         echo "Mostrando ${FILENAME}.pdf..."
-        if command -v xdg-open &>/dev/null; then
-            xdg-open "${DIRECTORY}/${FILENAME}.pdf"
         
-        elif command -v open &>/dev/null; then
-            open "${DIRECTORY}/${FILENAME}.pdf"
+        viewer=""
+        
+        if [ $# -eq 2 ] ;then
+        	viewer="$2"
+        fi
+        
+        if [ -z "$viewer" ]; then
+        	if command -v xdg-open &>/dev/null; then
+        	    viewer="xdg-open"
+        
+     		elif command -v open &>/dev/null; then
+            		viewer="open"
+            	fi
+        fi
+        
+        
+        if [ -n "$viewer" ]; then
+        	$viewer "${DIRECTORY}/${FILENAME}.pdf"
         
         else
             echo "Lector de PDF no disponible"
@@ -81,13 +79,17 @@ case "$1" in
     clean)
         clean_files ;;
     report)
-        create_report;;
+        select_report 
+        create_pdf ;;
     slide)
-        create_slide;;
+        select_slide 
+        create_pdf ;;
     show_report)
-        show_report;;
+        select_report 
+        show_pdf ;;
     show_slide)
-        show_slide;;
+        select_slide 
+        show_pdf ;;
     *)
         echo "Opción no valida. Por favor ingrese una de las siguientes opciones : run , clean , report , slide , show_report , show_slide"
 esac
